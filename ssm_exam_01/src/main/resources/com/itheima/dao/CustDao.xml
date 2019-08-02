@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.dao.CustDao">
+    <select id="search" parameterType="map" resultMap="cust_user">
+        SELECT * FROM s_cust c,s_user u
+
+        <where>
+            <if test="c.cust_name != null">
+                AND cust_name LIKE #{cust_name}
+            </if>
+
+            <if test="c.cust_type != null">
+                AND cust_type LIKE #{cust_type}
+            </if>
+        </where>
+    </select>
+
+    <select id="findAllById" parameterType="int" resultMap="cust_user">
+        SELECT * FROM s_cust c,s_user u WHERE c.cust_link_user=u.uid
+    </select>
+
+    <resultMap id="cust_user" type="cust">
+        <id column="cid" property="cid"/>
+        <result column="cust_name" property="cust_name"/>
+        <result column="cust_type" property="cust_type"/>
+        <result column="cust_phone" property="cust_phone"/>
+        <result column="cust_address" property="cust_address"/>
+
+        <association property="user" javaType="user">
+            <id column="uid" property="uid"/>
+            <result column="username" property="username"/>
+            <result column="password" property="password"/>
+            <result column="rolename" property="rolename"/>
+        </association>
+    </resultMap>
+</mapper>
